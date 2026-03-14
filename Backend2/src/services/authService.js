@@ -1,6 +1,7 @@
 const prisma = require('../prisma');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const axios = require('axios');
 const { generateOTP } = require('../utils/otpGenerator');
 const { sendOTP } = require('../utils/mailer');
 
@@ -123,10 +124,43 @@ const resetPassword = async (email, newPassword) => {
   return { message: 'Password reset successful' };
 };
 
+const verifyPhoneOTP = async (userId, requestId) => {
+  // Call MSG91 API to verify the token/request_id
+  const options = {
+    method: 'GET',
+    url: 'https://control.msg91.com/api/v5/widget/verifyAccessToken',
+    params: { auth_token: requestId },
+    headers: {
+      accept: 'application/json' 
+    }
+  };
+
+  try {
+    const response = await axios.request(options);
+    
+    if (response.data && response.data.type === 'success') {
+      await prisma.user.update({
+        where: { id: userId },
+        data: { isPhoneVerified: true },
+      });
+
+      return { success: true, message: 'Phone verified successfully.' };
+    } else {
+      throw new Error(`Phone verification failed: ${response.data.message || 'Invalid Token'}`);
+    }
+  } catch (error) {
+    if (error.response && error.response.data) {
+       throw new Error(`MSG91 Error: ${error.response.data.message}`);
+    }
+    throw new Error(error.message || 'Error occurred during phone verification.');
+  }
+};
+
 module.exports = {
   signup,
   login,
   forgotPassword,
   verifyOTP,
   resetPassword,
+  verifyPhoneOTP,
 };
