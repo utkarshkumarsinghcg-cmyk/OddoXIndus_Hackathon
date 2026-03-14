@@ -9,6 +9,7 @@ import Receipts from './pages/operations/Receipts';
 import Deliveries from './pages/operations/Deliveries';
 import Transfers from './pages/operations/Transfers';
 import Adjustments from './pages/operations/Adjustments';
+import Warehouses from './pages/settings/Warehouses';
 
 function App() {
   return (
@@ -41,7 +42,7 @@ function App() {
 
           {/* Settings Routes */}
           <Route path="settings">
-             <Route path="warehouses" element={<div className="p-6 text-2xl font-semibold">Warehouses Setup</div>} />
+             <Route path="warehouses" element={<Warehouses />} />
              <Route index element={<div className="p-6 text-2xl font-semibold">Settings Overview</div>} />
           </Route>
 

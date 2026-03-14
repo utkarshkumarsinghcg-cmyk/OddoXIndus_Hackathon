@@ -1,114 +1,188 @@
 import { useState } from 'react';
-import { Truck, CheckCircle2, ShoppingCart, Search, Package } from 'lucide-react';
 
 const Deliveries = () => {
-  const [deliveries, setDeliveries] = useState([
-    { id: 'OUT-0045', customer: 'Global Retailers', product: 'Office Chairs', qty: 10, date: 'Oct 24, 2023', status: 'Ready to Pick' },
+  const [status, setStatus] = useState('Ready');
+  const [products, setProducts] = useState([
+    { id: 1, name: '[DESK001] Desk', qty: 6 }
   ]);
+  const [deliveryAddress, setDeliveryAddress] = useState('');
+  const [responsible, setResponsible] = useState('');
+  const [scheduleDate, setScheduleDate] = useState('');
+  const [operationType, setOperationType] = useState('Delivery Orders');
 
-  const [formData, setFormData] = useState({ customer: '', product: 'Office Chairs', qty: '' });
+  const handleValidate = () => setStatus('Done');
 
-  const handleValidate = (e) => {
-    e.preventDefault();
-    if (!formData.customer || !formData.qty) return;
-    setDeliveries([...deliveries, { 
-      id: `OUT-00${deliveries.length + 46}`, 
-      ...formData, 
-      date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
-      status: 'Shipped (Done)' 
-    }]);
-    setFormData({ customer: '', product: 'Office Chairs', qty: '' });
+  const handleNewDelivery = () => {
+    setStatus('Draft');
+    setDeliveryAddress('');
+    setResponsible('');
+    setScheduleDate('');
+    setOperationType('Delivery Orders');
+    setProducts([]);
+  };
+
+  const handleAddProduct = () => {
+    setProducts([...products, { id: Date.now(), name: '', qty: 1 }]);
+  };
+
+  const handleProductChange = (id, field, value) => {
+    setProducts(products.map(p => p.id === id ? { ...p, [field]: value } : p));
   };
 
   return (
-    <div className="space-y-6 animate-fade-in">
-      <div className="flex justify-between items-center mb-8">
-        <div>
-          <h1 className="text-3xl font-extrabold text-gray-900 tracking-tight">Delivery Orders</h1>
-          <p className="text-gray-500 mt-1">Pick, pack, and validate outgoing shipments to customers.</p>
-        </div>
-      </div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Create Form */}
-        <div className="lg:col-span-1 bg-white shadow-sm border border-gray-100 rounded-2xl p-6 h-fit">
-          <div className="flex items-center gap-2 mb-6 border-b border-gray-100 pb-4">
-            <Truck className="w-5 h-5 text-cyan-600" />
-            <h3 className="text-lg font-bold text-gray-900">Create Delivery</h3>
-          </div>
-          <form className="space-y-4" onSubmit={handleValidate}>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Customer / Destination</label>
-              <div className="relative">
-                <ShoppingCart className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-                <input required value={formData.customer} onChange={e => setFormData({...formData, customer: e.target.value})} type="text" className="w-full pl-9 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 outline-none text-sm" placeholder="e.g., Global Retailers" />
-              </div>
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Product to Ship</label>
-              <select value={formData.product} onChange={e => setFormData({...formData, product: e.target.value})} className="w-full pl-3 pr-8 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 outline-none text-sm bg-white">
-                <option>Steel Rods</option>
-                <option>A4 Paper</option>
-                <option>Office Chairs</option>
-              </select>
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Quantity to Ship</label>
-              <div className="relative">
-                <Package className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-                <input required value={formData.qty} onChange={e => setFormData({...formData, qty: e.target.value})} type="number" min="1" className="w-full pl-9 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 outline-none text-sm" placeholder="10" />
-              </div>
-            </div>
-            <button type="submit" className="w-full bg-cyan-600 hover:bg-cyan-700 text-white font-semibold py-2.5 rounded-lg transition-colors flex items-center justify-center gap-2 mt-4 shadow-sm border border-cyan-700">
-              <CheckCircle2 className="w-4 h-4" /> Pick, Pack & Validate
-            </button>
-            <p className="text-xs text-gray-500 text-center mt-2">
-              Validating will decrease <span className="font-bold">available stock</span>.
-            </p>
-          </form>
+    <div className="w-full max-w-5xl mx-auto space-y-6 animate-fade-in p-4">
+      <div className="bg-white border border-gray-200 shadow-sm rounded-xl overflow-hidden">
+        {/* Top Navbar Simulation */}
+        <div className="p-3 border-b border-gray-200 bg-gray-50 flex items-center">
+          <button 
+            onClick={handleNewDelivery}
+            className="px-4 py-1.5 border border-gray-300 bg-white rounded-md shadow-sm text-sm font-medium hover:bg-gray-50 transition-colors text-gray-700">
+            New
+          </button>
         </div>
 
-        {/* History List */}
-        <div className="lg:col-span-2 bg-white shadow-sm border border-gray-100 rounded-2xl overflow-hidden">
-          <div className="p-5 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
-            <h3 className="text-lg font-bold text-gray-900 flex items-center gap-2">
-              Delivery Queue
-            </h3>
-            <div className="relative">
-              <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
-              <input type="text" placeholder="Search orders..." className="pl-9 pr-4 py-1.5 border border-gray-300 rounded-lg text-sm w-64 focus:outline-none focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500" />
+        <div className="p-6 md:p-8">
+          <div className="flex items-center gap-2 mb-6 text-gray-600 font-medium text-lg">
+            Delivery
+          </div>
+
+          {/* Action and Status Bar */}
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center bg-gray-50 border border-gray-200 rounded-t-xl p-3">
+            <div className="flex gap-2">
+              <button 
+                onClick={handleValidate}
+                disabled={status === 'Done'}
+                className="px-4 py-2 bg-emerald-600 text-white rounded-md shadow-sm text-sm font-semibold hover:bg-emerald-700 disabled:opacity-50 transition-colors">
+                Validate
+              </button>
+              <button className="px-4 py-2 bg-white border border-gray-300 rounded-md shadow-sm text-sm font-semibold text-gray-700 hover:bg-gray-50 transition-colors">
+                Print
+              </button>
+              <button className="px-4 py-2 bg-white border border-gray-300 rounded-md shadow-sm text-sm font-semibold text-gray-700 hover:bg-gray-50 transition-colors">
+                Cancel
+              </button>
+            </div>
+
+            <div className="flex items-center text-sm font-bold mt-4 md:mt-0 bg-white border border-gray-200 rounded-md overflow-hidden shadow-sm">
+               <div className={`px-4 py-2 flex items-center justify-center transition-colors ${status === 'Draft' ? 'text-gray-900 bg-gray-100' : 'text-gray-400'}`}>
+                  Draft
+               </div>
+               <div className="text-gray-300">❯</div>
+               <div className={`px-4 py-2 flex items-center justify-center transition-colors ${status === 'Waiting' ? 'text-gray-900 bg-gray-100' : 'text-gray-400'}`}>
+                  Waiting
+               </div>
+               <div className="text-gray-300">❯</div>
+               <div className={`px-4 py-2 flex items-center justify-center transition-colors ${status === 'Ready' ? 'text-gray-900 bg-gray-100' : 'text-gray-400'}`}>
+                  Ready
+               </div>
+               <div className="text-gray-300">❯</div>
+               <div className={`px-4 py-2 flex items-center justify-center transition-colors ${status === 'Done' ? 'text-emerald-600 bg-emerald-50' : 'text-gray-400'}`}>
+                  Done
+               </div>
             </div>
           </div>
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-sm whitespace-nowrap">
-              <thead className="bg-gray-50/80 text-gray-500 font-medium border-b border-gray-100">
-                <tr>
-                  <th className="px-6 py-3">Order ID</th>
-                  <th className="px-6 py-3">Customer</th>
-                  <th className="px-6 py-3">Product Out</th>
-                  <th className="px-6 py-3">Qty</th>
-                  <th className="px-6 py-3">Date</th>
-                  <th className="px-6 py-3">Status</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-100">
-                {deliveries.map((r, i) => (
-                  <tr key={i} className="hover:bg-cyan-50/30 transition-colors">
-                    <td className="px-6 py-4 font-bold text-gray-900">{r.id}</td>
-                    <td className="px-6 py-4 font-medium text-gray-700">{r.customer}</td>
-                    <td className="px-6 py-4 text-cyan-700 font-semibold">{r.product}</td>
-                    <td className="px-6 py-4 font-bold text-red-500">-{r.qty}</td>
-                    <td className="px-6 py-4 text-gray-500">{r.date}</td>
-                    <td className="px-6 py-4">
-                      <span className={`px-2.5 py-1 bg-opacity-10 rounded-full text-xs font-bold border ${r.status.includes('Done') ? 'bg-cyan-500 text-cyan-700 border-cyan-200' : 'bg-amber-500 text-amber-700 border-amber-200'}`}>
-                        {r.status}
-                      </span>
-                    </td>
+          
+          {/* Main Info Area */}
+          <div className="border border-t-0 border-gray-200 p-6 md:p-8 rounded-b-xl bg-white mb-8 shadow-sm">
+            <div className="text-3xl font-bold text-gray-900 mb-10 tracking-tight">WH/OUT/0001</div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-8">
+              <div className="space-y-6">
+                <div className="flex items-end group">
+                  <label className="w-32 text-sm font-bold text-gray-700 pb-1 shrink-0">Delivery Address</label>
+                  <input 
+                    value={deliveryAddress}
+                    onChange={e => setDeliveryAddress(e.target.value)}
+                    className="flex-1 border-b border-gray-300 group-focus-within:border-cyan-600 outline-none px-1 py-1 text-sm text-gray-900 bg-transparent transition-colors font-medium" 
+                  />
+                </div>
+                <div className="flex items-end group">
+                  <label className="w-32 text-sm font-bold text-gray-700 pb-1 shrink-0">Responsible</label>
+                  <input 
+                    value={responsible}
+                    onChange={e => setResponsible(e.target.value)}
+                    className="flex-1 border-b border-gray-300 group-focus-within:border-cyan-600 outline-none px-1 py-1 text-sm text-gray-900 bg-transparent transition-colors font-medium" 
+                  />
+                </div>
+              </div>
+              
+              <div className="space-y-6">
+                <div className="flex items-end group">
+                  <label className="w-32 text-sm font-bold text-gray-700 pb-1 shrink-0">Schedule Date</label>
+                  <input 
+                    type="date"
+                    value={scheduleDate}
+                    onChange={e => setScheduleDate(e.target.value)}
+                    className="flex-1 border-b border-gray-300 group-focus-within:border-cyan-600 outline-none px-1 py-1 text-sm text-gray-900 bg-transparent transition-colors font-medium" 
+                  />
+                </div>
+                <div className="flex items-end group relative">
+                  <label className="w-32 text-sm font-bold text-gray-700 pb-1 shrink-0">Operation type</label>
+                  <select 
+                    value={operationType}
+                    onChange={e => setOperationType(e.target.value)}
+                    className="flex-1 border-b border-gray-300 group-focus-within:border-cyan-600 outline-none px-1 py-1 text-sm text-gray-900 bg-transparent transition-colors font-medium appearance-none cursor-pointer" 
+                  >
+                    <option value="Delivery Orders">Delivery Orders</option>
+                    <option value="Internal Transfers">Internal Transfers</option>
+                    <option value="Receipts">Receipts</option>
+                  </select>
+                  {/* Custom dropdown arrow to match wireframe visual */}
+                  <div className="absolute right-1 bottom-2 pointer-events-none border-l-4 border-r-4 border-t-[6px] border-l-transparent border-r-transparent border-t-gray-600"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Notebook / Products Tabs */}
+          <div className="bg-white">
+            <div className="flex border-b border-gray-200 mb-6">
+              <div className="px-6 py-3 text-sm font-bold text-cyan-700 border-b-2 border-cyan-700 -mb-[1px]">
+                Products
+              </div>
+            </div>
+            
+            <div className="px-2">
+              <table className="w-full text-left">
+                <thead className="border-b-2 border-gray-200">
+                  <tr>
+                    <th className="pb-3 text-sm font-extrabold text-gray-800 w-3/4">Product</th>
+                    <th className="pb-3 text-sm font-extrabold text-gray-800">Quantity</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody className="divide-y divide-gray-100">
+                  {products.map(p => (
+                    <tr key={p.id} className="hover:bg-gray-50/50 group">
+                      <td className="py-2 pr-4">
+                        <input 
+                          value={p.name}
+                          onChange={e => handleProductChange(p.id, 'name', e.target.value)}
+                          placeholder="e.g. Desk"
+                          className="w-full border-b border-transparent focus:border-cyan-600 outline-none px-1 py-1 text-sm text-gray-900 bg-transparent transition-colors font-semibold" 
+                        />
+                      </td>
+                      <td className="py-2">
+                        <input 
+                          type="number"
+                          value={p.qty}
+                          onChange={e => handleProductChange(p.id, 'qty', e.target.value)}
+                          className="w-32 border-b border-transparent focus:border-cyan-600 outline-none px-1 py-1 text-sm text-gray-900 bg-transparent transition-colors font-semibold" 
+                        />
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              <div className="mt-4 pb-4">
+                <button 
+                  onClick={handleAddProduct}
+                  className="text-cyan-600 text-sm font-bold hover:text-cyan-800 transition-colors">
+                  Add New product
+                </button>
+              </div>
+            </div>
           </div>
+
         </div>
       </div>
     </div>

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
-import { LayoutDashboard, Package, ArrowLeftRight, Settings, User, LogOut, ChevronDown, ChevronRight, FilePlus, Boxes, LayoutList, RefreshCw, ArrowDownToLine, Truck, PenTool, History, Building2 } from 'lucide-react';
+import { LayoutDashboard, Package, ArrowLeftRight, ArrowRightLeft, Settings, User, LogOut, ChevronDown, ChevronRight, FilePlus, Boxes, LayoutList, RefreshCw, ArrowDownToLine, Truck, PenTool, History, Building2 } from 'lucide-react';
 
 const Sidebar = () => {
   const location = useLocation();
@@ -32,6 +32,7 @@ const Sidebar = () => {
       subItems: [
         { name: 'Receipts', path: '/operations/receipts', icon: ArrowDownToLine },
         { name: 'Delivery Orders', path: '/operations/deliveries', icon: Truck },
+        { name: 'Internal Transfers', path: '/operations/transfers', icon: ArrowRightLeft },
         { name: 'Inventory Adjustment', path: '/operations/adjustments', icon: PenTool },
         { name: 'Move History', path: '/operations/history', icon: History },
       ]

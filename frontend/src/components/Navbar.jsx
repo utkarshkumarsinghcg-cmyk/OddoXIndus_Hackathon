@@ -1,10 +1,14 @@
 import { useState, useRef, useEffect } from 'react';
-import { Bell, Search, Menu, User, Settings, LogOut, Package } from 'lucide-react';
+import { Bell, Search, Menu, User, Settings, LogOut, Package, AlertTriangle, Info } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
+import { fetchNotifications } from '../services/notificationService';
 
 const Navbar = () => {
   const [showNotifications, setShowNotifications] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
+  const [notifications, setNotifications] = useState([]);
+  const [isLoadingNotifications, setIsLoadingNotifications] = useState(true);
+  
   const notificationRef = useRef(null);
   const profileRef = useRef(null);
   const navigate = useNavigate();
@@ -27,10 +31,32 @@ const Navbar = () => {
     navigate('/login');
   };
 
-  const notifications = [
-    { id: 1, title: 'Low Stock Alert', message: 'Product "A4 Paper" is running low.', time: '2 mins ago', icon: Package, color: 'text-amber-500 bg-amber-50' },
-    { id: 2, title: 'New Delivery', message: 'Shipment #4592 has arrived at WH01.', time: '1 hour ago', icon: Bell, color: 'text-emerald-500 bg-emerald-50' },
-  ];
+  // Fetch notifications from backend
+  useEffect(() => {
+    const loadNotifications = async () => {
+      setIsLoadingNotifications(true);
+      try {
+        const data = await fetchNotifications();
+        // Assuming backend returns an array. Map fallback icons/colors depending on 'type' if you like
+        const mappedData = data.map(notif => ({
+          ...notif,
+          icon: notif.type === 'alert' ? AlertTriangle : notif.type === 'info' ? Info : Bell,
+          color: notif.type === 'alert' ? 'text-red-500 bg-red-50' : notif.type === 'info' ? 'text-blue-500 bg-blue-50' : 'text-emerald-500 bg-emerald-50'
+        }));
+        setNotifications(mappedData);
+      } catch (error) {
+        console.warn("Backend not yet connected or no notifications route. Using fallback dummy data for UI.");
+        setNotifications([
+          { id: 1, title: 'Low Stock Alert', message: 'Product "A4 Paper" is running low.', time: '2 mins ago', icon: Package, color: 'text-amber-500 bg-amber-50' },
+          { id: 2, title: 'New Delivery', message: 'Shipment #4592 has arrived at WH01.', time: '1 hour ago', icon: Bell, color: 'text-emerald-500 bg-emerald-50' },
+        ]);
+      } finally {
+        setIsLoadingNotifications(false);
+      }
+    };
+
+    loadNotifications();
+  }, []);
 
   return (
     <header className="h-16 bg-white border-b border-gray-100 flex items-center justify-between px-4 sm:px-6 flex-shrink-0 z-30 shadow-sm relative">
