@@ -1,10 +1,10 @@
 services:
   - type: web
-    name: oddo-inventory-backend
+    name: oddo-inventory-backend-v2
     env: node
-    rootDir: backend
-    buildCommand: npm install
-    startCommand: node index.js
+    rootDir: Backend2
+    buildCommand: npm install && npm run migrate
+    startCommand: npm start
     envVars:
       - key: DATABASE_URL
         fromDatabase:
@@ -12,6 +12,10 @@ services:
           property: connectionString
       - key: PORT
         value: 5000
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JWT_EXPIRES_IN
+        value: 7d
 
 databases:
   - name: oddo-db
