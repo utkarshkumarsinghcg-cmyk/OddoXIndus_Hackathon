@@ -21,7 +21,7 @@ const FilterDropdown = ({ label, options, selected, onChange }) => {
         <button
           type="button"
           onClick={() => setIsOpen(!isOpen)}
-          className="inline-flex items-center justify-between w-full rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 hover:border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 transition-all gap-2"
+          className="inline-flex items-center justify-between w-full rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 hover:border-gray-300 focus:outline-none focus:ring-2 focus:ring-cyan-500/20 transition-all gap-2"
         >
           {label === 'Status' ? <Filter className="w-4 h-4 text-gray-400" /> : null}
           <span className="flex-1 text-left">{selected || label}</span>
@@ -39,8 +39,8 @@ const FilterDropdown = ({ label, options, selected, onChange }) => {
                   onChange(option.value);
                   setIsOpen(false);
                 }}
-                className={`block w-full px-4 py-2.5 text-left text-sm hover:bg-indigo-50 hover:text-indigo-700 transition-colors ${
-                  selected === option.value ? 'bg-indigo-50/50 text-indigo-700 font-medium' : 'text-gray-700'
+                className={`block w-full px-4 py-2.5 text-left text-sm hover:bg-cyan-50 hover:text-cyan-700 transition-colors ${
+                  selected === option.value ? 'bg-cyan-50/50 text-cyan-700 font-medium' : 'text-gray-700'
                 }`}
               >
                 {option.label}

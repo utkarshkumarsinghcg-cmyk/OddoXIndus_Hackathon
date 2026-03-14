@@ -26,7 +26,7 @@ const Dashboard = () => {
         ${row.status === 'Ready' ? 'bg-emerald-500 text-emerald-700 border-emerald-200' :
           row.status === 'Waiting' ? 'bg-amber-500 text-amber-700 border-amber-200' :
           row.status === 'Draft' ? 'bg-gray-500 text-gray-700 border-gray-200' :
-          'bg-indigo-500 text-indigo-700 border-indigo-200'}`}
+          'bg-cyan-500 text-cyan-700 border-cyan-200'}`}
       >
         {row.status}
       </span>
@@ -106,14 +106,14 @@ const Dashboard = () => {
               </thead>
               <tbody className="divide-y divide-gray-100">
                 {recentActivityData.slice(0, 5).map((row, idx) => (
-                  <tr key={idx} className="hover:bg-indigo-50/30 transition-colors cursor-pointer">
+                  <tr key={idx} className="hover:bg-cyan-50/30 transition-colors cursor-pointer">
                     <td className="px-6 py-4 font-semibold text-gray-900">{row.id}</td>
                     <td className="px-6 py-4">
                       <span className={`px-2.5 py-1 bg-opacity-10 rounded-full text-xs font-medium border
                         ${row.status === 'Ready' ? 'bg-emerald-500 text-emerald-700 border-emerald-200' :
                           row.status === 'Waiting' ? 'bg-amber-500 text-amber-700 border-amber-200' :
                           row.status === 'Draft' ? 'bg-gray-500 text-gray-700 border-gray-200' :
-                          'bg-indigo-500 text-indigo-700 border-indigo-200'}`}
+                          'bg-cyan-500 text-cyan-700 border-cyan-200'}`}
                       >
                         {row.status}
                       </span>
@@ -124,7 +124,7 @@ const Dashboard = () => {
             </table>
           </div>
           <div className="px-6 py-4 border-t border-gray-100 bg-gray-50/50">
-            <button className="text-indigo-600 font-medium text-sm hover:text-indigo-700 transition w-full text-center py-2 rounded-lg hover:bg-white shadow-sm border border-transparent hover:border-gray-200">
+            <button className="text-cyan-600 font-medium text-sm hover:text-cyan-700 transition w-full text-center py-2 rounded-lg hover:bg-white shadow-sm border border-transparent hover:border-gray-200">
               View all activity &rarr;
             </button>
           </div>

@@ -5,7 +5,7 @@ const Table = ({ title, data, columns }) => {
     <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
       <div className="px-6 py-5 border-b border-gray-100 flex justify-between items-center bg-white">
         <h3 className="text-lg font-bold text-gray-900">{title}</h3>
-        <button className="text-sm font-medium text-indigo-600 hover:text-indigo-700 hover:bg-indigo-50 px-3 py-1.5 rounded-lg transition-colors">
+        <button className="text-sm font-medium text-cyan-600 hover:text-cyan-700 hover:bg-cyan-50 px-3 py-1.5 rounded-lg transition-colors">
           View All
         </button>
       </div>

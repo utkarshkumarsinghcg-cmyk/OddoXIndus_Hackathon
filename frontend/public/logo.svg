@@ -1,0 +1,23 @@
+<svg width="400" height="100" viewBox="0 0 400 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="cyanBlue" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00E5FF" />
+      <stop offset="100%" stop-color="#0055FF" />
+    </linearGradient>
+    <linearGradient id="darkBlue" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#0F2942" />
+      <stop offset="100%" stop-color="#1A4A7A" />
+    </linearGradient>
+  </defs>
+  
+  <g transform="translate(10, 15)">
+    <!-- Shape representing the V/N arrow -->
+    <path d="M10 35 L25 65 L40 25 L55 65 L80 15" stroke="url(#darkBlue)" stroke-width="8" stroke-linejoin="round" stroke-linecap="round" fill="none"/>
+    <path d="M25 35 L40 65 L55 25 L75 65 L100 15" stroke="url(#cyanBlue)" stroke-width="8" stroke-linejoin="round" stroke-linecap="round" fill="none"/>
+    <!-- Arrow tip -->
+    <polygon points="90,5 110,15 95,25" fill="#00E5FF" />
+  </g>
+
+  <text x="130" y="55" font-family="Arial, sans-serif" font-weight="900" font-size="34" fill="#0F2942">WARENOVA</text>
+  <text x="133" y="78" font-family="Arial, sans-serif" font-weight="bold" font-size="14" fill="#0F2942" letter-spacing="1.5">DIGITAL SOLUTIONS</text>
+</svg>

@@ -15,7 +15,7 @@ const ChartWidget = () => {
     <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col h-full">
       <div className="flex justify-between items-center mb-6">
         <h3 className="text-lg font-bold text-gray-900 tracking-tight">Stock Movement & Volume</h3>
-        <select className="bg-gray-50 border-none text-sm rounded-lg px-3 py-2 text-gray-600 font-medium focus:ring-2 focus:ring-indigo-100">
+        <select className="bg-gray-50 border-none text-sm rounded-lg px-3 py-2 text-gray-600 font-medium focus:ring-2 focus:ring-cyan-100">
           <option>Last 7 months</option>
           <option>This Year</option>
         </select>

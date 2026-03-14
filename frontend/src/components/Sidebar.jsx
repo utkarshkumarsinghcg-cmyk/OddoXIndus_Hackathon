@@ -12,9 +12,8 @@ const Sidebar = () => {
 
   return (
     <aside className="w-64 bg-white border-r border-gray-200 hidden md:flex flex-col relative z-20 shadow-sm">
-      <div className="h-16 flex items-center px-6 border-b border-gray-100">
-        <Package2 className="w-8 h-8 text-indigo-600 mr-2" />
-        <span className="text-xl font-bold text-gray-900 tracking-tight">CoreInventory</span>
+      <div className="h-16 flex items-center px-4 border-b border-gray-100 mt-2">
+        <img src="/logo.svg" alt="Warenova" className="h-[48px] w-auto -ml-2" />
       </div>
       <div className="flex-1 overflow-y-auto py-6">
         <nav className="space-y-1.5 px-3">
@@ -25,13 +24,13 @@ const Sidebar = () => {
               className={({ isActive }) =>
                 `flex items-center px-3 py-2.5 text-sm font-medium rounded-xl transition-all duration-200 ${
                   isActive
-                    ? 'bg-indigo-50 text-indigo-700 shadow-sm shadow-indigo-100'
+                    ? 'bg-cyan-50 text-cyan-700 shadow-sm shadow-cyan-100'
                     : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
                 }`
               }
             >
               <route.icon className={`w-5 h-5 mr-3 flex-shrink-0 transition-colors ${
-                window.location.pathname.includes(route.path) ? 'text-indigo-600' : 'text-gray-400'
+                window.location.pathname.includes(route.path) ? 'text-cyan-600' : 'text-gray-400'
               }`} />
               {route.name}
             </NavLink>

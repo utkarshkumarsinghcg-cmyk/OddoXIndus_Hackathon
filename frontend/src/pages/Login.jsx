@@ -15,13 +15,10 @@ const Login = () => {
   return (
     <div className="min-h-screen flex text-gray-900 font-sans">
       {/* Left Pane - Dark */}
-      <div className="hidden lg:flex lg:w-[45%] bg-[#121826] flex-col justify-between p-12 text-white relative overflow-hidden">
+      <div className="hidden lg:flex lg:w-[45%] bg-[#0f2942] flex-col justify-between p-12 text-white relative overflow-hidden">
         {/* Logo */}
-        <div className="flex items-center gap-3 relative z-10 text-blue-500">
-          <div className="bg-blue-500 p-1.5 rounded text-white inline-flex">
-            <Package2 className="w-5 h-5" />
-          </div>
-          <span className="text-xl font-bold tracking-tight">Shipzo</span>
+        <div className="flex items-center gap-3 relative z-10">
+          <img src="/logo.svg" alt="Warenova" className="h-10 brightness-[200] contrast-[1.5]" />
         </div>
 
         {/* Hero Content */}
@@ -36,17 +33,17 @@ const Login = () => {
 
           {/* Stats Cards */}
           <div className="grid grid-cols-3 gap-4">
-            <div className="bg-[#1C2434] p-5 rounded-xl border border-gray-800/50">
-              <div className="text-[28px] font-bold text-emerald-400 mb-2">250+</div>
-              <div className="text-[10px] font-bold tracking-widest text-gray-500 uppercase leading-snug">Vehicles<br/>Managed</div>
+            <div className="bg-[#163654] p-5 rounded-xl border border-gray-700/50">
+              <div className="text-[28px] font-bold text-cyan-400 mb-2">250+</div>
+              <div className="text-[10px] font-bold tracking-widest text-cyan-100 uppercase leading-snug">Vehicles<br/>Managed</div>
             </div>
-            <div className="bg-[#1C2434] p-5 rounded-xl border border-gray-800/50">
-              <div className="text-[28px] font-bold text-emerald-400 mb-2">98%</div>
-              <div className="text-[10px] font-bold tracking-widest text-gray-500 uppercase leading-snug">On-Time Delivery</div>
+            <div className="bg-[#163654] p-5 rounded-xl border border-gray-700/50">
+              <div className="text-[28px] font-bold text-cyan-400 mb-2">98%</div>
+              <div className="text-[10px] font-bold tracking-widest text-cyan-100 uppercase leading-snug">On-Time Delivery</div>
             </div>
-            <div className="bg-[#1C2434] p-5 rounded-xl border border-gray-800/50">
-              <div className="text-[28px] font-bold text-emerald-400 mb-2">$2.4M</div>
-              <div className="text-[10px] font-bold tracking-widest text-gray-500 uppercase leading-snug">Cost Savings</div>
+            <div className="bg-[#163654] p-5 rounded-xl border border-gray-700/50">
+              <div className="text-[28px] font-bold text-cyan-400 mb-2">$2.4M</div>
+              <div className="text-[10px] font-bold tracking-widest text-cyan-100 uppercase leading-snug">Cost Savings</div>
             </div>
           </div>
         </div>
@@ -107,7 +104,7 @@ const Login = () => {
                 <label htmlFor="password" className="block text-sm font-bold text-gray-800">
                   Password
                 </label>
-                <Link to="/forgot-password" className="text-sm font-bold text-emerald-400 hover:text-emerald-500 transition-colors">
+                <Link to="/forgot-password" className="text-sm font-bold text-[#00E5FF] hover:text-cyan-500 transition-colors">
                   Forgot Password?
                 </Link>
               </div>
@@ -134,7 +131,7 @@ const Login = () => {
 
             <button
               type="submit"
-              className="w-full bg-[#1C2434] hover:bg-[#111827] text-white font-bold py-3.5 rounded transition-all mt-4"
+              className="w-full bg-[#0f2942] hover:bg-[#0a192f] text-white font-bold py-3.5 rounded transition-all mt-4"
             >
               Sign In
             </button>
@@ -142,7 +139,7 @@ const Login = () => {
 
           <p className="text-center text-sm text-gray-500 mt-8 font-medium">
             Don't have an account?{' '}
-            <Link to="/signup" className="font-bold text-emerald-400 hover:text-emerald-500 transition-colors">
+            <Link to="/signup" className="font-bold text-[#00E5FF] hover:text-cyan-500 transition-colors">
               Contact Admin
             </Link>
           </p>
