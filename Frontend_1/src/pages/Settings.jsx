@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { fetchWarehouses, createWarehouse, updateWarehouse, deleteWarehouse } from '../services/api';
-import { Warehouse, MapPin, Plus, Edit3, Trash2, Save, X, Building2, Layers } from 'lucide-react';
+import { Warehouse, MapPin, Plus, Edit3, Trash2, X, Building2 } from 'lucide-react';
 
 
 const Settings = () => {
   const [warehouses, setWarehouses] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [editingLocId, setEditingLocId] = useState(null);
   
   // Create / Edit modal state
   const [showModal, setShowModal] = useState(false);

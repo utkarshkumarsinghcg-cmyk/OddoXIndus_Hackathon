@@ -3,11 +3,20 @@ const dotenv = require('dotenv');
 const cors = require('cors');
 const morgan = require('morgan');
 const { errorHandler } = require('./middleware/errorHandler');
+const supabase = require('./utils/supabase');
+
 
 // Load environment variables
 dotenv.config();
 
 const app = express();
+
+if (supabase) {
+  console.log('✅ Supabase Client Initialized');
+} else {
+  console.warn('⚠️ Supabase Client NOT Initialized (Missing credentials)');
+}
+
 
 // Middleware
 app.use(express.json());
