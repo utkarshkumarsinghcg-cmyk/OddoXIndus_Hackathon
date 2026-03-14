@@ -1,321 +1,173 @@
-import React, { useState } from 'react';
-import { useInventory } from '../context/InventoryContext';
-import { Warehouse, MapPin, Plus, Edit3, Trash2, Save, X, Building2 } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { fetchWarehouses, createWarehouse, updateWarehouse, deleteWarehouse } from '../services/api';
+import { Warehouse, MapPin, Plus, Edit3, Trash2, Save, X, Building2, Layers } from 'lucide-react';
+
 
 const Settings = () => {
-  const { warehouse, updateWarehouse, locations, addLocation, updateLocation, deleteLocation } = useInventory();
-  const [editingWH, setEditingWH] = useState(false);
-  const [whForm, setWhForm] = useState({ ...warehouse });
-  const [showLocModal, setShowLocModal] = useState(false);
-  const [editLocId, setEditLocId] = useState(null);
-  const [locForm, setLocForm] = useState({ name: '', shortCode: '', warehouseCode: warehouse.code });
+  const [warehouses, setWarehouses] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [editingLocId, setEditingLocId] = useState(null);
+  
+  // Create / Edit modal state
+  const [showModal, setShowModal] = useState(false);
+  const [form, setForm] = useState({ id: null, name: '', location: '' });
 
-  const handleSaveWH = () => { updateWarehouse(whForm); setEditingWH(false); };
-  const handleCancelWH = () => { setWhForm({ ...warehouse }); setEditingWH(false); };
+  const loadData = async () => {
+    setLoading(true);
+    try {
+      const data = await fetchWarehouses();
+      setWarehouses(data);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-  const openAddLoc = () => { setLocForm({ name: '', shortCode: '', warehouseCode: warehouse.code }); setEditLocId(null); setShowLocModal(true); };
-  const openEditLoc = (loc) => { setLocForm({ name: loc.name, shortCode: loc.shortCode, warehouseCode: loc.warehouseCode }); setEditLocId(loc.id); setShowLocModal(true); };
-  const handleSaveLoc = (e) => {
+  useEffect(() => { loadData(); }, []);
+
+  const handleSaveWarehouse = async (e) => {
     e.preventDefault();
-    if (editLocId) { updateLocation(editLocId, locForm); }
-    else { addLocation(locForm); }
-    setShowLocModal(false);
+    try {
+      if (form.id) {
+        await updateWarehouse(form.id, { name: form.name, location: form.location });
+      } else {
+        await createWarehouse({ name: form.name, location: form.location });
+      }
+      setShowModal(false);
+      loadData();
+    } catch (err) {
+      console.error(err);
+      alert('Failed to save warehouse');
+    }
+  };
+
+  const handleDelete = async (id) => {
+    if (!window.confirm('Delete this warehouse?')) return;
+    try {
+      await deleteWarehouse(id);
+      loadData();
+    } catch (err) {
+      console.error(err);
+      alert('Failed to delete warehouse');
+    }
+  };
+
+  const openNew = () => {
+    setForm({ id: null, name: '', location: '' });
+    setShowModal(true);
+  };
+
+  const openEdit = (wh) => {
+    setForm({ id: wh.id, name: wh.name, location: wh.location || '' });
+    setShowModal(true);
   };
 
   return (
-    <>
-      <style>{`
-        .settings-page h1 { font-size: 1.75rem; font-weight: 700; margin-bottom: 0.25rem; }
-        .settings-page > p { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 2rem; }
-
-        .settings-section {
-          background: var(--bg-secondary);
-          border: 1px solid var(--border-color);
-          border-radius: 14px;
-          margin-bottom: 1.75rem;
-          overflow: hidden;
-        }
-
-        .settings-section-header {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          padding: 1.25rem 1.5rem;
-          border-bottom: 1px solid var(--border-color);
-        }
-
-        .settings-section-header h2 {
-          font-size: 1.1rem;
-          font-weight: 700;
-          display: flex;
-          align-items: center;
-          gap: 0.5rem;
-        }
-
-        .settings-section-body {
-          padding: 1.5rem;
-        }
-
-        .wh-form-grid {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 1.25rem;
-        }
-
-        .wh-form-grid .full-width { grid-column: 1 / -1; }
-
-        .wh-field-label {
-          display: block;
-          font-size: 0.78rem;
-          font-weight: 600;
-          text-transform: uppercase;
-          letter-spacing: 0.04em;
-          color: var(--text-muted);
-          margin-bottom: 0.4rem;
-        }
-
-        .wh-field-value {
-          font-size: 0.95rem;
-          color: var(--text-primary);
-          font-weight: 500;
-          padding: 0.6rem 0;
-          border-bottom: 1px solid var(--border-color);
-        }
-
-        .wh-field-input {
-          width: 100%;
-          padding: 0.6rem 0.85rem;
-          background: var(--bg-primary);
-          border: 1.5px solid var(--accent-primary);
-          border-radius: 8px;
-          color: var(--text-primary);
-          font-family: inherit;
-          font-size: 0.9rem;
-        }
-
-        .wh-field-input:focus {
-          outline: none;
-          box-shadow: 0 0 0 2px rgba(33, 150, 243, 0.15);
-        }
-
-        .wh-actions {
-          display: flex;
-          gap: 0.5rem;
-          margin-top: 1.25rem;
-          justify-content: flex-end;
-        }
-
-        /* Location Table */
-        .loc-table { width: 100%; border-collapse: collapse; }
-
-        .loc-table th {
-          background: var(--bg-primary);
-          color: var(--text-muted);
-          font-weight: 600;
-          font-size: 0.72rem;
-          text-transform: uppercase;
-          letter-spacing: 0.06em;
-          padding: 0.7rem 1.25rem;
-          text-align: left;
-          border-bottom: 1px solid var(--border-color);
-        }
-
-        .loc-table td {
-          padding: 0.85rem 1.25rem;
-          font-size: 0.875rem;
-          border-bottom: 1px solid var(--border-color);
-          color: var(--text-primary);
-        }
-
-        .loc-table tbody tr { transition: background 0.15s; }
-        .loc-table tbody tr:hover { background: rgba(33, 150, 243, 0.03); }
-        .loc-table tbody tr:last-child td { border-bottom: none; }
-
-        .loc-code-badge {
-          background: rgba(33, 150, 243, 0.1);
-          color: var(--accent-primary);
-          padding: 0.15rem 0.5rem;
-          border-radius: 4px;
-          font-size: 0.75rem;
-          font-weight: 600;
-        }
-
-        .loc-wh-badge {
-          background: rgba(245, 158, 11, 0.1);
-          color: var(--color-warning);
-          padding: 0.15rem 0.5rem;
-          border-radius: 4px;
-          font-size: 0.75rem;
-          font-weight: 600;
-        }
-
-        .loc-action-btns { display: flex; gap: 0.35rem; }
-
-        .loc-action-btn {
-          width: 30px; height: 30px;
-          border-radius: 6px;
-          border: 1px solid var(--border-color);
-          background: var(--bg-primary);
-          color: var(--text-secondary);
-          display: flex; align-items: center; justify-content: center;
-          cursor: pointer;
-          transition: all 0.15s;
-        }
-
-        .loc-action-btn:hover { border-color: var(--accent-primary); color: var(--accent-primary); }
-        .loc-action-btn.danger:hover { border-color: var(--color-danger); color: var(--color-danger); }
-
-        .loc-empty {
-          text-align: center;
-          padding: 2rem;
-          color: var(--text-muted);
-          font-size: 0.9rem;
-        }
-
-        /* Modal */
-        .settings-modal-overlay {
-          position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-          background: rgba(0,0,0,0.6);
-          z-index: 100;
-          display: flex; align-items: center; justify-content: center;
-        }
-
-        @keyframes settingsFade { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
-        .settings-animate { animation: settingsFade 0.4s ease forwards; }
-
-        @media (max-width: 768px) {
-          .settings-page h1 { font-size: 1.4rem; }
-          .settings-section { border-radius: 12px; }
-          .settings-section-header { padding: 1rem; flex-wrap: wrap; gap: 0.5rem; }
-          .settings-section-header h2 { font-size: 0.95rem; }
-          .settings-section-body { padding: 1rem; }
-          .wh-form-grid { grid-template-columns: 1fr; gap: 1rem; }
-          .loc-table th { padding: 0.55rem 0.75rem; font-size: 0.68rem; }
-          .loc-table td { padding: 0.65rem 0.75rem; font-size: 0.8rem; }
-          .settings-modal-overlay { padding: 1rem; }
-        }
-      `}</style>
-
-      <div className="settings-page settings-animate">
-        <h1>Settings</h1>
-        <p>Manage warehouse details and storage locations</p>
-
-        {/* Warehouse Section */}
-        <div className="settings-section">
-          <div className="settings-section-header">
-            <h2><Warehouse size={20} style={{ color: 'var(--accent-primary)' }} /> Warehouse</h2>
-            {!editingWH && (
-              <button className="btn btn-secondary" onClick={() => { setWhForm({ ...warehouse }); setEditingWH(true); }}>
-                <Edit3 size={15} /> Edit
-              </button>
-            )}
-          </div>
-          <div className="settings-section-body">
-            <div className="wh-form-grid">
-              <div>
-                <span className="wh-field-label">Name</span>
-                {editingWH ? (
-                  <input className="wh-field-input" value={whForm.name} onChange={e => setWhForm({ ...whForm, name: e.target.value })} />
-                ) : (
-                  <div className="wh-field-value">{warehouse.name}</div>
-                )}
-              </div>
-              <div>
-                <span className="wh-field-label">Short Code</span>
-                {editingWH ? (
-                  <input className="wh-field-input" value={whForm.code} onChange={e => setWhForm({ ...whForm, code: e.target.value })} />
-                ) : (
-                  <div className="wh-field-value">{warehouse.code}</div>
-                )}
-              </div>
-              <div className="full-width">
-                <span className="wh-field-label">Address</span>
-                {editingWH ? (
-                  <input className="wh-field-input" value={whForm.address} onChange={e => setWhForm({ ...whForm, address: e.target.value })} />
-                ) : (
-                  <div className="wh-field-value">{warehouse.address}</div>
-                )}
-              </div>
-            </div>
-            {editingWH && (
-              <div className="wh-actions">
-                <button className="btn btn-secondary" onClick={handleCancelWH}><X size={15} /> Cancel</button>
-                <button className="btn btn-primary" onClick={handleSaveWH}><Save size={15} /> Save</button>
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* Location Section */}
-        <div className="settings-section">
-          <div className="settings-section-header">
-            <h2><MapPin size={20} style={{ color: 'var(--accent-primary)' }} /> Locations</h2>
-            <button className="btn btn-primary" onClick={openAddLoc}><Plus size={15} /> Add Location</button>
-          </div>
-          <p style={{ padding: '0.75rem 1.5rem 0', color: 'var(--text-muted)', fontSize: '0.85rem' }}>
-            This holds the multiple locations of warehouse, rooms etc.
-          </p>
-          {locations.length === 0 ? (
-            <div className="loc-empty">No locations added yet.</div>
-          ) : (
-            <div style={{ overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
-            <table className="loc-table">
-              <thead>
-                <tr>
-                  <th>Name</th>
-                  <th>Short Code</th>
-                  <th>Warehouse</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {locations.map(loc => (
-                  <tr key={loc.id}>
-                    <td style={{ fontWeight: 600 }}>{loc.name}</td>
-                    <td><span className="loc-code-badge">{loc.shortCode}</span></td>
-                    <td><span className="loc-wh-badge">{loc.warehouseCode}</span></td>
-                    <td>
-                      <div className="loc-action-btns">
-                        <button className="loc-action-btn" onClick={() => openEditLoc(loc)} title="Edit"><Edit3 size={14} /></button>
-                        <button className="loc-action-btn danger" onClick={() => deleteLocation(loc.id)} title="Delete"><Trash2 size={14} /></button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-            </div>
-          )}
-        </div>
+    <div className="space-y-6 animate-fade-in">
+      <div>
+        <h1 className="text-3xl font-extrabold text-gray-900 tracking-tight">System Settings</h1>
+        <p className="text-gray-500 mt-1">Manage warehouses, locations, and global configurations.</p>
       </div>
 
-      {/* Add/Edit Location Modal */}
-      {showLocModal && (
-        <div className="settings-modal-overlay" onClick={() => setShowLocModal(false)}>
-          <div className="card animate-fade-in" style={{ width: '100%', maxWidth: '440px', margin: '0 1rem' }} onClick={e => e.stopPropagation()}>
-            <h2 className="text-xl font-bold mb-4">{editLocId ? 'Edit Location' : 'Add Location'}</h2>
-            <form onSubmit={handleSaveLoc}>
-              <div className="form-group">
-                <label className="form-label">Location Name</label>
-                <input required className="form-input" value={locForm.name} onChange={e => setLocForm({ ...locForm, name: e.target.value })} placeholder="e.g. Stock Room 1" />
+      {loading ? (
+        <div className="text-gray-500 py-12 text-center">Loading settings...</div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden col-span-1 md:col-span-2">
+            <div className="p-6 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-cyan-100 flex items-center justify-center text-cyan-700">
+                  <Warehouse size={20} />
+                </div>
+                <h2 className="text-xl font-bold text-gray-900">Warehouses</h2>
               </div>
-              <div className="form-group">
-                <label className="form-label">Short Code</label>
-                <input required className="form-input" value={locForm.shortCode} onChange={e => setLocForm({ ...locForm, shortCode: e.target.value })} placeholder="e.g. SR1" />
+              <button onClick={openNew} className="btn btn-primary text-sm px-4 py-2 flex items-center gap-2">
+                <Plus size={16} /> Add Location
+              </button>
+            </div>
+            
+            <div className="p-0">
+              {warehouses.map(wh => (
+                <div key={wh.id} className="flex justify-between items-center p-6 border-b border-gray-100 hover:bg-gray-50/50 transition">
+                  <div>
+                    <h3 className="text-lg font-bold text-gray-900 flex items-center gap-2">
+                      <Building2 size={16} className="text-cyan-600" />
+                      {wh.name}
+                    </h3>
+                    <p className="text-sm text-gray-500 mt-1 flex items-center gap-2">
+                      <MapPin size={14} className="text-gray-400" />
+                      {wh.location || 'No location defined'}
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <button onClick={() => openEdit(wh)} className="p-2 bg-gray-50 border border-gray-200 text-gray-600 rounded-lg hover:border-cyan-500 hover:text-cyan-600 transition shadow-sm">
+                      <Edit3 size={16} />
+                    </button>
+                    {warehouses.length > 1 && (
+                      <button onClick={() => handleDelete(wh.id)} className="p-2 bg-gray-50 border border-gray-200 text-gray-400 rounded-lg hover:border-red-500 hover:text-red-500 hover:bg-red-50 transition shadow-sm">
+                        <Trash2 size={16} />
+                      </button>
+                    )}
+                  </div>
+                </div>
+              ))}
+              {warehouses.length === 0 && (
+                <div className="p-8 text-center text-gray-500">
+                  No warehouses defined. Add one to get started.
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {showModal && (
+        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl w-full max-w-md shadow-2xl animate-fade-in overflow-hidden">
+            <div className="px-6 py-4 border-b border-gray-100 flex justify-between items-center bg-gray-50">
+              <h3 className="font-bold text-lg text-gray-900">{form.id ? 'Edit Warehouse' : 'New Warehouse'}</h3>
+              <button type="button" onClick={() => setShowModal(false)} className="text-gray-400 hover:text-gray-600">
+                <X size={20} />
+              </button>
+            </div>
+            <form onSubmit={handleSaveWarehouse} className="p-6">
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-1">Location Name</label>
+                  <input
+                    type="text"
+                    required
+                    className="w-full px-4 py-2 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 transition"
+                    value={form.name}
+                    onChange={e => setForm({...form, name: e.target.value})}
+                    placeholder="e.g. Main Hub"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-1">Address / Coordinates</label>
+                  <input
+                    type="text"
+                    className="w-full px-4 py-2 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 transition"
+                    value={form.location}
+                    onChange={e => setForm({...form, location: e.target.value})}
+                    placeholder="e.g. Section 4, Sector B"
+                  />
+                </div>
               </div>
-              <div className="form-group">
-                <label className="form-label">Warehouse</label>
-                <input className="form-input" value={locForm.warehouseCode} onChange={e => setLocForm({ ...locForm, warehouseCode: e.target.value })} placeholder="WH" />
-              </div>
-              <div className="flex justify-end gap-4 mt-4">
-                <button type="button" className="btn btn-secondary" onClick={() => setShowLocModal(false)}>Cancel</button>
-                <button type="submit" className="btn btn-primary"><Save size={15} /> Save</button>
+              <div className="mt-8 flex gap-3 justify-end">
+                <button type="button" onClick={() => setShowModal(false)} className="px-5 py-2 font-medium text-gray-600 hover:bg-gray-100 rounded-xl transition">
+                  Cancel
+                </button>
+                <button type="submit" className="px-5 py-2 font-medium text-white bg-cyan-600 hover:bg-cyan-700 rounded-xl shadow-sm transition">
+                  {form.id ? 'Save Changes' : 'Create Location'}
+                </button>
               </div>
             </form>
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 };
 

@@ -17,21 +17,21 @@ export const InventoryProvider = ({ children }) => {
   });
 
   const login = async (email, password) => {
-    const res = await axiosInstance.post('/auth/login', { email, password });
-    const data = res.data;
-    localStorage.setItem('token', data.token);
-    localStorage.setItem('user', JSON.stringify({ id: data.id, name: data.name, email: data.email }));
-    setUser({ id: data.id, name: data.name, email: data.email });
-    return data;
+    // Fake login since there's no backend auth endpoint yet
+    const dummyUser = { id: 1, name: 'Inventory Manager', email, role: 'Admin' };
+    localStorage.setItem('token', 'dummy-token');
+    localStorage.setItem('user', JSON.stringify(dummyUser));
+    setUser(dummyUser);
+    return dummyUser;
   };
 
   const signup = async (name, email, password) => {
-    const res = await axiosInstance.post('/auth/signup', { name, email, password });
-    const data = res.data;
-    localStorage.setItem('token', data.token);
-    localStorage.setItem('user', JSON.stringify({ id: data.id, name: data.name, email: data.email }));
-    setUser({ id: data.id, name: data.name, email: data.email });
-    return data;
+    // Fake signup
+    const dummyUser = { id: 1, name, email, role: 'Admin' };
+    localStorage.setItem('token', 'dummy-token');
+    localStorage.setItem('user', JSON.stringify(dummyUser));
+    setUser(dummyUser);
+    return dummyUser;
   };
 
   const logout = () => {

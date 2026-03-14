@@ -150,6 +150,10 @@ const Topbar = ({ onMenuToggle }) => {
           color: var(--text-muted);
         }
 
+        @media (min-width: 769px) {
+          .topbar-menu-btn { display: none; }
+        }
+
         @media (max-width: 768px) {
           .topbar { padding: 0 0.75rem; }
           .topbar-search-input { font-size: 0.78rem; }
