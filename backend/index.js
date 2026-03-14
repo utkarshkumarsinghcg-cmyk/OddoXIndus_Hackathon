@@ -13,6 +13,7 @@ const adjustmentRoutes = require('./routes/adjustmentRoutes');
 const moveRoutes = require('./routes/moveRoutes');
 const inventoryStockRoutes = require('./routes/inventoryStockRoutes');
 const reorderRuleRoutes = require('./routes/reorderRuleRoutes');
+const authRoutes = require('./routes/authRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -23,6 +24,7 @@ app.use(express.json());
 
 // ─── V1 Routes ──────────────────────────────────────────────────────────────
 app.use('/api/v1/categories', categoryRoutes);
+app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/products', productRoutes);
 app.use('/api/v1/warehouses', warehouseRoutes);
 app.use('/api/v1/users', userRoutes);
