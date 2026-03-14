@@ -1,12 +1,11 @@
+import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import Login from './pages/Login';
-import Signup from './pages/Signup';
-import ForgotPassword from './pages/ForgotPassword';
-import Dashboard from './pages/Dashboard';
 import DashboardLayout from './layouts/DashboardLayout';
-import ProductManagement from './pages/products/ProductManagement';
+import ProductList from './pages/products/ProductList';
+import AddProduct from './pages/products/AddProduct';
+import EditProduct from './pages/products/EditProduct';
 import Receipts from './pages/operations/Receipts';
-import Deliveries from './pages/operations/Deliveries';
+import DeliveryOrders from './pages/operations/DeliveryOrders';
 import Transfers from './pages/operations/Transfers';
 import Adjustments from './pages/operations/Adjustments';
 import Warehouses from './pages/settings/Warehouses';
@@ -15,30 +14,22 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/forgot-password" element={<ForgotPassword />} />
-        
         <Route path="/" element={<DashboardLayout />}>
-          <Route index element={<Navigate to="/dashboard" replace />} />
-          <Route path="dashboard" element={<Dashboard />} />
-          
-          {/* Products Routes */}
+          <Route index element={<Navigate to="/products" replace />} />
+
           <Route path="products">
-            <Route path="manage" element={<ProductManagement />} />
-            <Route path="stock" element={<div className="p-6"><h1 className="text-3xl font-extrabold text-gray-900 tracking-tight">Stock Availability</h1><p className="text-gray-500 mt-1">Real-time mapping of stock quantities across your warehouses.</p></div>} />
-            <Route path="categories" element={<div className="p-6"><h1 className="text-3xl font-extrabold text-gray-900 tracking-tight">Categories</h1><p className="text-gray-500 mt-1">Manage product taxonomies.</p></div>} />
-            <Route path="reordering" element={<div className="p-6"><h1 className="text-3xl font-extrabold text-gray-900 tracking-tight">Reordering Rules</h1><p className="text-gray-500 mt-1">Automate stock purchasing based on inventory thresholds.</p></div>} />
+            <Route index element={<ProductList />} />
+            <Route path="add" element={<AddProduct />} />
+            <Route path="edit/:id" element={<EditProduct />} />
           </Route>
 
-          {/* Operations Routes */}
           <Route path="operations">
             <Route path="receipts" element={<Receipts />} />
-            <Route path="deliveries" element={<Deliveries />} />
+            <Route path="delivery-orders" element={<DeliveryOrders />} />
             <Route path="transfers" element={<Transfers />} />
             <Route path="adjustments" element={<Adjustments />} />
-            <Route path="history" element={<div className="p-6"><h1 className="text-3xl font-extrabold text-gray-900 tracking-tight">Move History</h1><p className="text-gray-500 mt-1">Global audit log of every stock movement.</p></div>} />
           </Route>
+<<<<<<< HEAD
 
           {/* Settings Routes */}
           <Route path="settings">
@@ -47,6 +38,8 @@ function App() {
           </Route>
 
           <Route path="profile" element={<div className="p-6 text-2xl font-semibold">Profile Settings</div>} />
+=======
+>>>>>>> d1009882834a549e4c2a650b5afe51864f428f02
         </Route>
       </Routes>
     </BrowserRouter>
