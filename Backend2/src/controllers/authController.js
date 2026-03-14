@@ -72,29 +72,10 @@ const resetPassword = async (req, res, next) => {
   }
 };
 
-const verifyPhoneOTP = async (req, res, next) => {
-  try {
-    const { requestId } = req.body;
-    
-    if (!requestId) {
-      res.status(400);
-      throw new Error('Please provide the MSG91 requestId');
-    }
-
-    // Pass the authenticated user ID and the request token
-    const result = await authService.verifyPhoneOTP(req.user.id, requestId);
-    res.json(result);
-  } catch (error) {
-    res.status(400);
-    next(error);
-  }
-};
-
 module.exports = {
   signup,
   login,
   forgotPassword,
   verifyOTP,
   resetPassword,
-  verifyPhoneOTP,
 };
