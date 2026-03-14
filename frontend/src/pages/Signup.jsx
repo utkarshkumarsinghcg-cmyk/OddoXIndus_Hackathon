@@ -12,12 +12,12 @@ const Signup = () => {
   };
 
   return (
-    <div className="min-h-screen flex text-gray-900 font-sans">
+    <div className="h-screen w-full flex overflow-hidden text-gray-900 font-sans">
       {/* Left Pane - Dark */}
       <div className="hidden lg:flex lg:w-[45%] bg-[#0f2942] flex-col justify-between p-12 text-white relative overflow-hidden">
         {/* Logo */}
         <div className="flex items-center gap-3 relative z-10">
-          <img src="/logo.svg" alt="Warenova" className="h-10 brightness-[200] contrast-[1.5]" />
+          <img src="/logo.svg" alt="Warenova" className="h-16 brightness-[200] contrast-[1.5] drop-shadow-lg" />
         </div>
 
         {/* Hero Content */}
@@ -54,7 +54,7 @@ const Signup = () => {
       </div>
 
       {/* Right Pane - Form */}
-      <div className="w-full lg:w-[55%] flex items-center justify-center p-8 sm:p-12 lg:p-24 bg-white overflow-y-auto max-h-screen">
+      <div className="w-full lg:w-[55%] flex items-center justify-center p-8 sm:p-12 lg:p-24 bg-white overflow-y-auto">
         <div className="w-full max-w-md my-auto pb-8">
           <h2 className="text-4xl font-extrabold text-[#111827] mb-3 tracking-tight">Create account</h2>
           <p className="text-gray-500 font-medium text-base mb-8">Sign up to get started as a Fleet Manager</p>
