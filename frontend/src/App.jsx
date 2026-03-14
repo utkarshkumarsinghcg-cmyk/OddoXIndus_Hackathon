@@ -29,7 +29,6 @@ function App() {
             <Route path="transfers" element={<Transfers />} />
             <Route path="adjustments" element={<Adjustments />} />
           </Route>
-<<<<<<< HEAD
 
           {/* Settings Routes */}
           <Route path="settings">
@@ -38,8 +37,6 @@ function App() {
           </Route>
 
           <Route path="profile" element={<div className="p-6 text-2xl font-semibold">Profile Settings</div>} />
-=======
->>>>>>> d1009882834a549e4c2a650b5afe51864f428f02
         </Route>
       </Routes>
     </BrowserRouter>
