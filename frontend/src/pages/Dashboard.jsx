@@ -9,13 +9,14 @@ const Dashboard = () => {
   const [filterType, setFilterType] = useState('All');
   const [filterStatus, setFilterStatus] = useState('All');
   const [filterWarehouse, setFilterWarehouse] = useState('All');
+  const [filterCategory, setFilterCategory] = useState('All');
 
   const kpiData = [
-    { title: 'Total Products', value: '14,234', icon: PackageOpen, trend: 'up', trendValue: '12' },
-    { title: 'Low Stock/Out', value: '86', icon: AlertTriangle, trend: 'down', trendValue: '4' },
+    { title: 'Total Products in Stock', value: '14,234', icon: PackageOpen, trend: 'up', trendValue: '12' },
+    { title: 'Low Stock / Out of Stock Items', value: '86', icon: AlertTriangle, trend: 'down', trendValue: '4' },
     { title: 'Pending Receipts', value: '12', icon: ArrowDownToLine, trend: 'up', trendValue: '8' },
     { title: 'Pending Deliveries', value: '45', icon: Truck, trend: 'down', trendValue: '2' },
-    { title: 'Internal Transfers', value: '8', icon: ArrowRightLeft, trend: 'up', trendValue: '15' },
+    { title: 'Internal Transfers Scheduled', value: '8', icon: ArrowRightLeft, trend: 'up', trendValue: '15' },
   ];
 
   const recentActivityColumns = [
@@ -46,8 +47,8 @@ const Dashboard = () => {
   const filterTypeOptions = [
     { label: 'All Document Types', value: 'All' },
     { label: 'Receipts', value: 'Receipts' },
-    { label: 'Deliveries', value: 'Deliveries' },
-    { label: 'Transfers', value: 'Transfers' },
+    { label: 'Delivery', value: 'Delivery' },
+    { label: 'Internal', value: 'Internal' },
     { label: 'Adjustments', value: 'Adjustments' },
   ];
 
@@ -57,6 +58,7 @@ const Dashboard = () => {
     { label: 'Waiting', value: 'Waiting' },
     { label: 'Ready', value: 'Ready' },
     { label: 'Done', value: 'Done' },
+    { label: 'Canceled', value: 'Canceled' },
   ];
 
   const filterWarehouseOptions = [
@@ -64,6 +66,13 @@ const Dashboard = () => {
     { label: 'WH01-Main', value: 'WH01-Main' },
     { label: 'WH02-East', value: 'WH02-East' },
     { label: 'WH03-North', value: 'WH03-North' },
+  ];
+
+  const filterCategoryOptions = [
+    { label: 'All Categories', value: 'All' },
+    { label: 'Electronics', value: 'Electronics' },
+    { label: 'Hardware', value: 'Hardware' },
+    { label: 'Consumables', value: 'Consumables' },
   ];
 
   return (
@@ -77,6 +86,7 @@ const Dashboard = () => {
           <FilterDropdown label="Type" options={filterTypeOptions} selected={filterType} onChange={setFilterType} />
           <FilterDropdown label="Status" options={filterStatusOptions} selected={filterStatus} onChange={setFilterStatus} />
           <FilterDropdown label="Warehouse" options={filterWarehouseOptions} selected={filterWarehouse} onChange={setFilterWarehouse} />
+          <FilterDropdown label="Category" options={filterCategoryOptions} selected={filterCategory} onChange={setFilterCategory} />
         </div>
       </div>
 
