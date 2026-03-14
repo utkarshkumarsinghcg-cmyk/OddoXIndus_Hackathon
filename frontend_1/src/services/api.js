@@ -2,14 +2,13 @@ import axios from 'axios';
 
 // Create an Axios instance with default configuration
 const api = axios.create({
-  // Because we configured a proxy in vite.config.js, requests to /api will be 
-  // forwarded to your backend (e.g., http://localhost:5000/api) 
-  // thus avoiding CORS issues during local development.
-  baseURL: '/api', 
+  // Use environment variable for production, fallback to /api for local proxy
+  baseURL: import.meta.env.VITE_API_BASE_URL || '/api', 
   headers: {
     'Content-Type': 'application/json',
   },
 });
+
 
 // Request Interceptor: Attach authentication token to every outgoing request
 api.interceptors.request.use(
