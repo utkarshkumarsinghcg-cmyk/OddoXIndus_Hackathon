@@ -3,6 +3,7 @@ services:
   - type: web
     name: oddo-inventory-v2
     env: node
+    plan: free
     rootDir: Backend2
     buildCommand: npm install && npm run migrate
     startCommand: npm start
