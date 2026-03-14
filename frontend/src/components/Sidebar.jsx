@@ -12,8 +12,8 @@ const Sidebar = () => {
 
   return (
     <aside className="w-64 bg-white border-r border-gray-200 hidden md:flex flex-col relative z-20 shadow-sm">
-      <div className="h-16 flex items-center px-4 border-b border-gray-100 mt-2">
-        <img src="/logo.svg" alt="Warenova" className="h-[48px] w-auto -ml-2" />
+      <div className="h-20 flex items-center px-4 border-b border-gray-100 mt-2">
+        <img src="/logo.svg" alt="Warenova" className="h-[64px] w-auto -ml-3" />
       </div>
       <div className="flex-1 overflow-y-auto py-6">
         <nav className="space-y-1.5 px-3">
