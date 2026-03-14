@@ -10,12 +10,10 @@ datasource db {
 model User {
   id        Int      @id @default(autoincrement())
   name      String
-  email           String   @unique
-  phone           String?  @unique
-  password        String
-  otp             String?
-  otpExpiry       DateTime?
-  isPhoneVerified Boolean  @default(false)
+  email     String   @unique
+  password  String
+  otp       String?
+  otpExpiry DateTime?
   createdAt DateTime @default(now())
 }
 
