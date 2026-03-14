@@ -1,0 +1,14 @@
+﻿ M frontend_1/README.md
+ M frontend_1/index.html
+ M frontend_1/package-lock.json
+ M frontend_1/package.json
+ M frontend_1/src/App.jsx
+ M frontend_1/src/components/Sidebar.jsx
+ M frontend_1/src/index.css
+ M frontend_1/src/pages/Dashboard.jsx
+ M frontend_1/src/pages/operations/Adjustments.jsx
+ M frontend_1/src/pages/operations/Deliveries.jsx
+ M frontend_1/src/pages/operations/Receipts.jsx
+ M frontend_1/src/pages/operations/Transfers.jsx
+ M frontend_1/vite.config.js
+?? status_short.txt
