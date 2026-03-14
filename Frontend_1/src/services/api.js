@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // Create an Axios instance with default configuration
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL || '/api/v1',
+  baseURL: 'https://oddoxindus-hackathon.onrender.com/api/v1',
   headers: {
     'Content-Type': 'application/json',
   },
