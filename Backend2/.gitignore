@@ -1,3 +1,8 @@
 node_modules/
 .env
 *.log
+error.txt
+prisma_error.txt
+*.tgz
+dist/
+build/
